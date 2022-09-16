@@ -22,7 +22,7 @@ fun mainMenu(){
     var selection=readLine()
     when (selection){
         "1" -> createDevice() //add device
-        "2" -> update() //update device
+        "2" -> update()//update device
         "3" -> print("My")
         "4" -> print("Hello")
         "5" -> print("Hello")
@@ -50,8 +50,14 @@ fun createDevice() {
                 println("Enter the OS version of the device")
                 var osVersion=readLine()
                 if(osVersion!=null){
-                    var osVersionInt= osVersion.toString().toInt()
-                    deviceList.add(Device(manufacturer,model,dnsName,osVersionInt))
+                    var osVersionFloat= osVersion.toString().toFloat()
+                    deviceList.add(Device(manufacturer,model,dnsName,osVersionFloat))
+                    println("Successfully entered new device:")
+                    println("Manufacturer: $manufacturer")
+                    println("Model: $model")
+                    println("DNS Name: $dnsName")
+                    println("OS Version: $osVersion")
+                    mainMenu()
                 }
                 else{
                     print("OS Version was incorrect value. Try again")
@@ -97,7 +103,7 @@ fun update(){
                         var newOs= readLine()
                         if(newOs!=null){
                             newOs= newOs.toInt().toString()
-                            var newOsInt=newOs.toInt()
+                            var newOsInt=newOs.toFloat()
                             device.osVersion=newOsInt
                         }
                         else{
@@ -118,4 +124,53 @@ fun update(){
         }
     }
 
+}
+
+fun viewAll(){
+    if(deviceList.isNotEmpty()) {
+        for (device in deviceList) {
+            println(device.dnsName)
+            println(device.manufacturer)
+            println(device.model)
+            println(device.osVersion)
+        }
+        mainMenu()
+    }
+    else{
+        println("Device List is empty")
+        mainMenu()
+    }
+}
+fun listDevicesByManufacturer(){
+    var manufacturer:String?
+    val manufacturerList= getManufacturers()
+    for (manu in manufacturerList){
+        println(manu)
+        println("---------")
+        for (device in deviceList){
+        if(device.manufacturer==manu){
+            print(device.toString())
+        }
+        }
+    }
+    mainMenu()
+}
+fun getManufacturers(): ArrayList<String> {
+    val manufacturerList=arrayListOf<String>()
+    for (device in deviceList){
+        if(!manufacturerList.contains(device.manufacturer)){
+            manufacturerList.add(device.manufacturer)
+        }
+    }
+    return manufacturerList
+}
+
+fun deleteDevice(){
+    println("Please enter the DNS name of the device you wish to delete")
+    val dnsToFind= readLine()
+    for (device in deviceList){
+        if(device.dnsName==dnsToFind){
+            //do something
+        }
+    }
 }

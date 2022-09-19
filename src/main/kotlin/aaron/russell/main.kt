@@ -1,10 +1,10 @@
 package aaron.russell
-import aaron.russell.Device
 
 
 val deviceList=mutableListOf<Device>()
 
 fun main(args: Array<String>){
+    loadDummyData()
     mainMenu()
 }
 
@@ -18,15 +18,17 @@ fun mainMenu(){
     println("3) Delete Device")
     println("4) See all Devices")
     println("5) See all Devices by manufacturer")
+    println("6) Add Link To Device")
+    println("7) Find route between devices")
     println("0) Exit")
     var selection=readLine()
     when (selection){
         "1" -> createDevice() //add device
         "2" -> update()//update device
-        "3" -> print("My")
-        "4" -> print("Hello")
-        "5" -> print("Hello")
-        "6" -> print("Hello")
+        "3" -> deleteDevice()
+        "4" -> viewAll()
+        "5" -> listDevicesByManufacturer()
+        "6" -> createLink()
         "7" -> print("Hello")
         "8" -> print("Hello")
         "9" -> print("Hello")
@@ -36,7 +38,32 @@ fun mainMenu(){
 
 
 }
-
+fun loadDummyData(){
+    val d1=Device("Cisco","1000d","carlie-wra1",1.0001,null)
+    val d2=Device("Arista","1000x","carlie-asa1",1.0001,null)
+    val d3=Device("Cisco","1000g","carlie-wrb1",1.0001,null)
+    val d4=Device("Arista","1000h","carlie-asb1",1.0001,null)
+    val d5=Device("Cisco","1000h","carlie-wrc1",1.0001,null)
+    val d6=Device("Arista","1000h","carlie-asc1",1.0001,null)
+    d1.linkedTo?.add(d2)
+    d2.linkedTo?.add(d1)
+    d3.linkedTo?.add(d1)
+    d1.linkedTo?.add(d3)
+    d2.linkedTo?.add(d4)
+    d4.linkedTo?.add(d2)
+    d5.linkedTo?.add(d3)
+    d3.linkedTo?.add(d5)
+    d4.linkedTo?.add(d2)
+    d2.linkedTo?.add(d4)
+    d6.linkedTo?.add(d5)
+    d5.linkedTo?.add(d6)
+    deviceList.add(d1)
+    deviceList.add(d2)
+    deviceList.add(d3)
+    deviceList.add(d4)
+    deviceList.add(d5)
+    deviceList.add(d6)
+}
 fun createDevice() {
     println("Enter the manufacturer of the device:")
     var manufacturer=readLine()
@@ -50,8 +77,8 @@ fun createDevice() {
                 println("Enter the OS version of the device")
                 var osVersion=readLine()
                 if(osVersion!=null){
-                    var osVersionFloat= osVersion.toString().toFloat()
-                    deviceList.add(Device(manufacturer,model,dnsName,osVersionFloat))
+                    var osVersionFloat= osVersion.toString().toDouble()
+                    deviceList.add(Device(manufacturer,model,dnsName,osVersionFloat,null))
                     println("Successfully entered new device:")
                     println("Manufacturer: $manufacturer")
                     println("Model: $model")
@@ -103,7 +130,7 @@ fun update(){
                         var newOs= readLine()
                         if(newOs!=null){
                             newOs= newOs.toInt().toString()
-                            var newOsInt=newOs.toFloat()
+                            var newOsInt=newOs.toDouble()
                             device.osVersion=newOsInt
                         }
                         else{
@@ -149,7 +176,7 @@ fun listDevicesByManufacturer(){
         println("---------")
         for (device in deviceList){
         if(device.manufacturer==manu){
-            print(device.toString())
+            println(device.toString())
         }
         }
     }
@@ -170,7 +197,27 @@ fun deleteDevice(){
     val dnsToFind= readLine()
     for (device in deviceList){
         if(device.dnsName==dnsToFind){
-            //do something
+            deviceList.remove(device)
+        }
+    }
+}
+fun createLink() {
+    println("Enter the DNS name of the device: ")
+    val dns1 = readLine()
+    println("Enter the device you wish to link to the device")
+    val dns2 = readLine()
+    if (dns1 != null) {
+        if (dns2 != null) {
+            for (device1 in deviceList) {
+                if (device1.dnsName == dns1) {
+                    for (device2 in deviceList) {
+                        if (device1.dnsName == dns2) {
+                            device1.linkedTo?.add(device2)
+                            device2.linkedTo?.add(device1)
+                        }
+                    }
+                }
+            }
         }
     }
 }

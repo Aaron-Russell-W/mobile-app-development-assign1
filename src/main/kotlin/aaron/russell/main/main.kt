@@ -1,11 +1,29 @@
-package aaron.russell
+package aaron.russell.main
 
-
-val deviceList=mutableListOf<Device>()
+import aaron.russell.models.DeviceModel
+import aaron.russell.views.DeviceView
+val deviceView=DeviceView()
+val deviceList=mutableListOf<DeviceModel>()
 
 fun main(args: Array<String>){
     loadDummyData()
-    mainMenu()
+    var input :Int
+    do{
+        input =deviceView.mainMenu()
+        when(input){
+            1 -> addDevice()
+            2 -> update()
+            3 -> delete()
+            4 -> viewAll()
+            5-> viewAllByManufacturer
+            6-> addLink()
+            7-> findRoute()
+            0 -> exit()
+        }
+        println()
+    } while(input != 0){
+        println("Shutting Down Bye Bye")
+    }
 }
 
 fun mainMenu(){
@@ -39,12 +57,12 @@ fun mainMenu(){
 
 }
 fun loadDummyData(){
-    val d1=Device("Cisco","1000d","carlie-wra1",1.0001,null)
-    val d2=Device("Arista","1000x","carlie-asa1",1.0001,null)
-    val d3=Device("Cisco","1000g","carlie-wrb1",1.0001,null)
-    val d4=Device("Arista","1000h","carlie-asb1",1.0001,null)
-    val d5=Device("Cisco","1000h","carlie-wrc1",1.0001,null)
-    val d6=Device("Arista","1000h","carlie-asc1",1.0001,null)
+    val d1= DeviceModel("Cisco","1000d","carlie-wra1",1.0001,null)
+    val d2= DeviceModel("Arista","1000x","carlie-asa1",1.0001,null)
+    val d3= DeviceModel("Cisco","1000g","carlie-wrb1",1.0001,null)
+    val d4= DeviceModel("Arista","1000h","carlie-asb1",1.0001,null)
+    val d5= DeviceModel("Cisco","1000h","carlie-wrc1",1.0001,null)
+    val d6= DeviceModel("Arista","1000h","carlie-asc1",1.0001,null)
     d1.linkedTo?.add(d2)
     d2.linkedTo?.add(d1)
     d3.linkedTo?.add(d1)
@@ -64,49 +82,11 @@ fun loadDummyData(){
     deviceList.add(d5)
     deviceList.add(d6)
 }
-fun createDevice() {
-    println("Enter the manufacturer of the device:")
-    var manufacturer=readLine()
-    if(manufacturer!= null){
-        println("Enter the model of the device:")
-        var model=readLine()
-        if(model!=null){
-            println("Enter the DNS name of the device:")
-            var dnsName=readLine()
-            if(dnsName!=null){
-                println("Enter the OS version of the device")
-                var osVersion=readLine()
-                if(osVersion!=null){
-                    var osVersionFloat= osVersion.toString().toDouble()
-                    deviceList.add(Device(manufacturer,model,dnsName,osVersionFloat,null))
-                    println("Successfully entered new device:")
-                    println("Manufacturer: $manufacturer")
-                    println("Model: $model")
-                    println("DNS Name: $dnsName")
-                    println("OS Version: $osVersion")
-                    mainMenu()
-                }
-                else{
-                    print("OS Version was incorrect value. Try again")
-                    createDevice()
-                }
-            }
-           else{
-                print("DNS name was an incorrect value. Try again")
-                createDevice()
-            }
-        }
-        else{
-            print("Model was an incorrect value. Try again")
-            createDevice()
-        }
-
+fun addDevice() {
+val devicce=DeviceModel()
+    if(deviceView.addDevice(device)){
+        devices.create(device)
     }
-    else{
-        print("Manufacture was an incorrect value. Try again")
-        createDevice()
-    }
-
 
 }
 fun update(){

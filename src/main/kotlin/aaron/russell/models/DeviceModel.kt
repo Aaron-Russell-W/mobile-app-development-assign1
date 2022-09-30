@@ -1,12 +1,9 @@
-package aaron.russell
+package aaron.russell.models
 
-data class Device(
+data class DeviceModel(
     var manufacturer: String,
     var model: String,
     var dnsName: String,
     var osVersion: Double,
-    val linkedTo: ArrayList<Device>?
+    var linkedTo: MutableList<DeviceModel>?
 )
-{
-
-}

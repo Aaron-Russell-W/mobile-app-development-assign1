@@ -1,5 +1,6 @@
 package aaron.russell.views
 
+import aaron.russell.models.DeviceMemStore
 import aaron.russell.models.DeviceModel
 
 class DeviceView {
@@ -14,11 +15,12 @@ class DeviceView {
         println("------------------------")
         println("1) Add Device")
         println("2) Update Device")
-        println("3) Delete Device")
-        println("4) See all Devices")
+        println("3) See all Device")
+        println("4) Search for Device By DNS")
         println("5) See all Devices by manufacturer")
-        println("6) Add Link To Device")
-        println("7) Find route between devices")
+        println("6) Find Devices By Manufacturer")
+        println("7) Link device to device")
+        println("8) Link devices together")
         println("0) Exit")
         println()
         print("Enter Option : ")
@@ -66,11 +68,11 @@ class DeviceView {
         if(device!=null){
             print("Enter a new DNS name for [ " + device.dnsName+ " ] : ")
             tempDns=readLine()!!
-            print("Enter a new DNS name for [ " + device.dnsName+ " ] : ")
+            print("Enter a new manufacturer for [ " + device.dnsName + " ] : ")
             tempManufacturer=readLine()!!
-            print("Enter a new DNS name for [ " + device.dnsName+ " ] : ")
+            print("Enter a new os-version name for [ " + device.dnsName+ " ] : ")
             tempVersionOs= readLine()!!.toDouble()
-            print("Enter a new DNS name for [ " + device.dnsName+ " ] : ")
+            print("Enter a new model name for [ " + device.dnsName+ " ] : ")
             tempModel=readLine()!!
             if(!tempDns.isNullOrEmpty() && !tempManufacturer.isNullOrEmpty() && !tempModel.isNullOrEmpty()){
                 device.dnsName=tempDns
@@ -79,6 +81,49 @@ class DeviceView {
                 device.osVersion=tempVersionOs
                 return true
             }
+            else{
+                print("You entered empty values. Try again")
+                return false
+            }
         }
+        else{
+            print("There are no devices stored")
+            return false
+        }
+    }
+    fun getByDNS():String{
+        var str:String?
+        var searchDns : String
+        print("Enter the DNS name of the device you wish to search/update")
+        str=readLine()!!
+        if(!str.isNullOrEmpty()){
+            searchDns=str
+        }
+        else
+            searchDns="Fail"
+        return searchDns
+    }
+    fun listByManufacturer():String{
+        var str:String?
+        var manu: String
+        print("Enter the DNS name of the devices you wish to search/update")
+        str=readLine()!!
+        if(!str.isNullOrEmpty()){
+            manu= str
+        }
+        else{
+            manu="Fail"
+        }
+        return manu
+    }
+    fun createLink(): MutableList<String> {
+        print("Enter the DNS of the device you wish to make a link to")
+        val firstDevice:String = readLine()!!;
+        print("Enter the DNS of the device you wish to make a link to")
+        val secondDevice:String =readLine()!!
+        val deviceNames= mutableListOf<String>()
+        deviceNames.add(firstDevice)
+        deviceNames.add(secondDevice)
+        return deviceNames
     }
 }

@@ -1,6 +1,8 @@
+package aaron.russell.models
+
 import aaron.russell.models.DeviceModel
-import aaron.russell.models.DeviceStore
 import mu.KotlinLogging
+import aaron.russell.models.DeviceStore
 
 private val logger = KotlinLogging.logger {}
 var lastId = 0L
@@ -9,7 +11,7 @@ internal fun getId(): Long {
     return lastId++
 }
 
-class   DeviceMemStore : DeviceStore {
+class DeviceMemStore : DeviceStore {
 
     val devices = ArrayList<DeviceModel>()
 
@@ -17,7 +19,7 @@ class   DeviceMemStore : DeviceStore {
         return devices
     }
 
-    override fun findOne(dnsName: String) : DeviceModel? {
+    override fun findOne(dnsName: String): DeviceModel? {
         var foundDevice: DeviceModel? = devices.find { p -> p.dnsName == dnsName }
         return foundDevice
     }
@@ -29,10 +31,23 @@ class   DeviceMemStore : DeviceStore {
     }
 
     override fun update(device: DeviceModel) {
-        var foundPlacemark = findOne(device.dnsName!!)
-        if (foundPlacemark != null) {
-            foundPlacemark.dnsName = device.dnsName
-            foundPlacemark.manufacturer = device.manufacturer
+        var foundDevice = findOne(device.dnsName!!)
+        if (foundDevice != null) {
+            foundDevice.dnsName = device.dnsName
+            foundDevice.manufacturer = device.manufacturer
+        }
+    }
+
+    override fun delete(device: DeviceModel) {
+
+    }
+
+    override fun link(device: DeviceModel, linker: String?) {
+        var foundDevice = findOne(device.dnsName!!)
+        if (foundDevice != null) {
+            if (linker != null) {
+                device.linkedTo?.add(linker)
+            }
         }
     }
 
@@ -40,3 +55,5 @@ class   DeviceMemStore : DeviceStore {
         devices.forEach { logger.info("${it}") }
     }
 }
+
+

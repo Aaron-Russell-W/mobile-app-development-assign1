@@ -1,15 +1,9 @@
 package aaron.russell.models
 
-import aaron.russell.models.DeviceModel
 import mu.KotlinLogging
-import aaron.russell.models.DeviceStore
 
 private val logger = KotlinLogging.logger {}
-var lastId = 0L
 
-internal fun getId(): Long {
-    return lastId++
-}
 
 class DeviceMemStore : DeviceStore {
 
@@ -20,8 +14,7 @@ class DeviceMemStore : DeviceStore {
     }
 
     override fun findOne(dnsName: String): DeviceModel? {
-        var foundDevice: DeviceModel? = devices.find { p -> p.dnsName == dnsName }
-        return foundDevice
+        return devices.find { p -> p.dnsName == dnsName }
     }
 
     override fun create(device: DeviceModel) {
@@ -31,22 +24,35 @@ class DeviceMemStore : DeviceStore {
     }
 
     override fun update(device: DeviceModel) {
-        var foundDevice = findOne(device.dnsName!!)
+        val foundDevice = findOne(device.dnsName)
         if (foundDevice != null) {
             foundDevice.dnsName = device.dnsName
             foundDevice.manufacturer = device.manufacturer
+            foundDevice.osVersion = device.osVersion
+            foundDevice.model=device.model
         }
     }
 
     override fun delete(device: DeviceModel) {
 
     }
-
+    override fun deleteLink(device:DeviceModel,unlinker:String?){
+        val foundDevice=findOne(device.dnsName)
+        if(foundDevice!=null){
+            if(unlinker!=null){
+                foundDevice.linkedTo.remove(unlinker)
+            }
+        }
+    }
     override fun link(device: DeviceModel, linker: String?) {
-        var foundDevice = findOne(device.dnsName!!)
+        val foundDevice = findOne(device.dnsName)
+        println("$foundDevice")
         if (foundDevice != null) {
+            print("Found Device DeviceMemStore")
             if (linker != null) {
-                device.linkedTo?.add(linker)
+                print("Linker not null")
+                foundDevice.linkedTo.add(linker)
+                println("Devicememstore Linked: ${foundDevice.linkedTo}")
             }
         }
     }

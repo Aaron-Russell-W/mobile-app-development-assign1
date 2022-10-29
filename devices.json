@@ -1,0 +1,67 @@
+[
+  {
+    "dnsName": "router1",
+    "manufacturer": "Cisco",
+    "model": "x900",
+    "osVersion": 1.02,
+    "linkedTo": [
+      "switch1",
+      "fwl1"
+    ]
+  },
+  {
+    "dnsName": "switch1",
+    "manufacturer": "arista",
+    "model": "1200",
+    "osVersion": 1.003,
+    "linkedTo": [
+      "router1"
+    ]
+  },
+  {
+    "dnsName": "fwl1",
+    "manufacturer": "palo alto",
+    "model": "2500",
+    "osVersion": 2.01,
+    "linkedTo": [
+      "router1",
+      "router3"
+    ]
+  },
+  {
+    "dnsName": "router3",
+    "manufacturer": "arista",
+    "model": "6000",
+    "osVersion": 4.0,
+    "linkedTo": [
+      "switch3",
+      "fwl1"
+    ]
+  },
+  {
+    "dnsName": "switch3",
+    "manufacturer": "cisco",
+    "model": "x900",
+    "osVersion": 1.0,
+    "linkedTo": [
+      "router3",
+      "router6"
+    ]
+  },
+  {
+    "dnsName": "router6",
+    "manufacturer": "arista",
+    "model": "4200",
+    "osVersion": 2.0,
+    "linkedTo": [
+      "switch3"
+    ]
+  },
+  {
+    "dnsName": "switch5",
+    "manufacturer": "arista",
+    "model": "2500",
+    "osVersion": 3.0,
+    "linkedTo": []
+  }
+]
